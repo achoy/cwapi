@@ -23,12 +23,12 @@ def get_photos():
 
 @app.route('/thumb/<path:filename>', methods=['GET'])
 def download1(filename):
-    dirpath = os.path.join(current_app.root_path, 'photos')
+    dirpath = os.path.join(current_app.root_path, 'photos/small')
     return send_from_directory(directory=dirpath, filename=filename)
 
 @app.route('/photo/<path:filename>', methods=['GET'])
 def download2(filename):
-    dirpath = os.path.join(current_app.root_path, 'photos')
+    dirpath = os.path.join(current_app.root_path, 'photos/large')
     return send_from_directory(directory=dirpath, filename=filename)
 
 if __name__ == '__main__':
