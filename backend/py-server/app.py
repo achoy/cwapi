@@ -24,6 +24,11 @@ def get_photos():
 def download(filename):
     dirpath = os.path.join(current_app.root_path, 'photos')
     return send_from_directory(directory=dirpath, filename=filename)
+
+@app.route('/photolarge/<path:filename>', methods=['GET'])
+def download(filename):
+    dirpath = os.path.join(current_app.root_path, 'photos')
+    return send_from_directory(directory=dirpath, filename=filename)
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
