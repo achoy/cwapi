@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 photos = [
     { 'url': 'Norwegian1.jpeg', 'size': 790, 'title': 'Norwegian 1' },
-    { 'url': 'Norwegian2.jpeg', 'size': 785, 'title': 'Norwegian 2' },
     { 'url': 'cool_balcony.jpg', 'size': 93, 'title': 'cool balcony' },
     { 'url': 'doctor_who.jpg', 'size': 887, 'title': 'Doctor Who'}
 ]
