@@ -42,7 +42,7 @@ photoArray =
 
 urlPrefix : String
 urlPrefix =
-    "http://elm-in-action.com/"
+    "http://tardis.choycreative.com:5000/"
 
 getPhotoUrl : Int -> Maybe String
 getPhotoUrl index =
@@ -66,12 +66,12 @@ viewLarge maybeUrl =
         Nothing -> text ""
         Just url ->
             img [ class "large"
-            , src (urlPrefix ++ "large/" ++ url)] []
+            , src (urlPrefix ++ "photo/" ++ url)] []
 
 viewThumbnail : Maybe String -> Photo -> Html Msg
 viewThumbnail selectedUrl thumbnail =
     img
-        [ src (urlPrefix ++ thumbnail.url)
+        [ src (urlPrefix ++ "thumb/" ++ thumbnail.url)
         , title (thumbnail.title ++ " [" ++ toString thumbnail.size ++ " KB]")
         , classList [ ( "selected", selectedUrl == Just thumbnail.url )]
         , onClick (SelectByUrl thumbnail.url)] []
