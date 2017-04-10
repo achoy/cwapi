@@ -21,14 +21,14 @@ def get_photos():
     return resp
 
 @app.route('/photo/<path:filename>', methods=['GET'])
-def download(filename):
+def download1(filename):
     dirpath = os.path.join(current_app.root_path, 'photos')
     return send_from_directory(directory=dirpath, filename=filename)
 
 @app.route('/photolarge/<path:filename>', methods=['GET'])
-def download(filename):
+def download2(filename):
     dirpath = os.path.join(current_app.root_path, 'photos')
     return send_from_directory(directory=dirpath, filename=filename)
-    
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
