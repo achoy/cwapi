@@ -1,5 +1,6 @@
 #!flask/bin/python
-from flask import Flask, jsonify, make_response
+import os
+from flask import Flask, jsonify, make_response, current_app, send_from_directory
 
 app = Flask(__name__)
 
@@ -20,12 +21,12 @@ def get_photos():
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
 
-@app.route('/photo/<path:filename>', methods=['GET'])
+@app.route('/thumb/<path:filename>', methods=['GET'])
 def download1(filename):
     dirpath = os.path.join(current_app.root_path, 'photos')
     return send_from_directory(directory=dirpath, filename=filename)
 
-@app.route('/photolarge/<path:filename>', methods=['GET'])
+@app.route('/photo/<path:filename>', methods=['GET'])
 def download2(filename):
     dirpath = os.path.join(current_app.root_path, 'photos')
     return send_from_directory(directory=dirpath, filename=filename)
