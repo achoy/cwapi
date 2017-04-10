@@ -9,20 +9,20 @@ import Http
 import Json.Decode exposing (string, int, list, Decoder)
 import Json.Decode.Pipeline exposing (decode, required, optional)
 
-type alias Photo = 
+type alias Photo =
     { url : String
      , size : Int
      , title : String }
 
 type ThumbnailSize = Small | Medium | Large
 
-type alias Model = 
+type alias Model =
     { photos : List Photo
     , selectedUrl : Maybe String
     , loadingError : Maybe String
     , chosenSize : ThumbnailSize }
 
-type Msg 
+type Msg
     = SelectByUrl String
     | SelectByIndex Int
     | SurpriseMe
@@ -30,7 +30,7 @@ type Msg
     | LoadPhotos (Result Http.Error (List Photo))
 
 initialModel : Model
-initialModel = 
+initialModel =
     { photos = []
     , selectedUrl = Nothing
     , loadingError = Nothing
@@ -50,7 +50,7 @@ getPhotoUrl index =
         Just photo -> Just photo.url
         Nothing -> Nothing
 
-randomPhotoPicker : Random.Generator Int 
+randomPhotoPicker : Random.Generator Int
 randomPhotoPicker =
     Random.int 0 (Array.length photoArray - 1)
 
@@ -77,14 +77,14 @@ viewThumbnail selectedUrl thumbnail =
         , onClick (SelectByUrl thumbnail.url)] []
 
 sizeToString : ThumbnailSize -> String
-sizeToString size = 
+sizeToString size =
     case size of
         Small -> "small"
         Medium -> "medium"
         Large -> "large"
 
 photoDecoder : Decoder Photo
-photoDecoder = 
+photoDecoder =
     decode Photo
         |> required "url" string
         |> required "size" int
@@ -92,9 +92,9 @@ photoDecoder =
 
 
 initialCmd : Cmd Msg
-initialCmd  = 
+initialCmd  =
     list photoDecoder
-        |> Http.get "http://elm-in-action.com/photos/list.json"
+        |> Http.get "http://tardis.choycreative.com:5000/photos/list.json"
         |> Http.send LoadPhotos
 
 
@@ -108,7 +108,7 @@ view model =
         , h3 [] [ text "Thumbnail Size:" ]
         , div [ id "choose-size" ]
             (List.map viewSizeChooser [ Small, Medium, Large ])
-        , div [ id "thumbnails", class (sizeToString model.chosenSize) ] 
+        , div [ id "thumbnails", class (sizeToString model.chosenSize) ]
             (List.map (viewThumbnail model.selectedUrl)
              model.photos)
         , viewLarge model.selectedUrl
@@ -124,7 +124,7 @@ update msg model =
         SelectByIndex index ->
             let
                 newSelectedUrl : Maybe String
-                newSelectedUrl = 
+                newSelectedUrl =
                     model.photos
                         |> Array.fromList
                         |> Array.get index
@@ -135,8 +135,8 @@ update msg model =
         SurpriseMe ->
             let
               randomPhotoPicker =
-                Random.int 0 (List.length model.photos - 1) 
-            in              
+                Random.int 0 (List.length model.photos - 1)
+            in
                 ( model, Random.generate SelectByIndex randomPhotoPicker )
 
         SetSize size ->
@@ -155,7 +155,7 @@ update msg model =
 viewOrError : Model -> Html Msg
 viewOrError model =
     case model.loadingError of
-        Nothing -> 
+        Nothing ->
             view model
         Just errorMessage ->
             div [ class "error-message" ]
@@ -165,9 +165,9 @@ viewOrError model =
 main : Program Never Model Msg
 main =
     Html.program
-    { 
+    {
         init = ( initialModel, initialCmd )
         , view = viewOrError
         , update = update
-        , subscriptions = (\_ -> Sub.none) 
+        , subscriptions = (\_ -> Sub.none)
     }
