@@ -7,6 +7,7 @@ import os
 import sched
 import time
 import sqlite3
+import pprint
 from flask import g
 from collections import namedtuple
 
@@ -52,16 +53,22 @@ class DirTable(dict):
 
     def store_entries(self):
         db = self.get_db()
-        db.delete('metaphotos', null, null)
+        db.execute('delete from metaphotos')
         rows = []
         for key, value in self.items():
-            rows.append((value['url'], value['size'], value['title']))
+            rows.append((value.url, value.size, value.description))
         db.executemany('insert into metaphotos (url, size, title) values(?,?,?)', rows)
         db.commit()
 
     def show_entries(self):
         for key, value in self.items():
-            pprint(value)
+            print(value)
+
+    def get_array_list(self):
+        llist = []
+        for key, value in self.items():
+            llist.append({'url': value.url, 'size': value.size, 'title': value.description})
+        return llist
 
     def match_entries(self, dirscan):
         filelist = dirscan.scan()
@@ -71,6 +78,7 @@ class DirTable(dict):
                 found.url = name
                 found.size = size
                 found.description = name
+                self[name] = found
             else:
                 self[name] = DirEntry(name, size, name)
 
@@ -91,7 +99,7 @@ class DirScan(object):
         return self.curFiles
 
     def getpath(self, name):
-        return os.join.path(self.scanFolder1, name)
+        return os.path.join(self.scanFolder1, name)
 
     def getprops(self, name):
         filepath = self.getpath(name)
