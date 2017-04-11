@@ -44,11 +44,11 @@ def large_files_path():
 def thumb_files_path():
     return os.path.join(current_app.root_path, 'photos/small')
 
-photos = [
-    { 'url': 'Norwegian1.jpeg', 'size': 790, 'title': 'Norwegian 1' },
-    { 'url': 'cool_balcony.jpg', 'size': 93, 'title': 'cool balcony' },
-    { 'url': 'doctor_who.jpg', 'size': 887, 'title': 'Doctor Who'}
-]
+#photos = [
+#    { 'url': 'Norwegian1.jpeg', 'size': 790, 'title': 'Norwegian 1' },
+#    { 'url': 'cool_balcony.jpg', 'size': 93, 'title': 'cool balcony' },
+#    { 'url': 'doctor_who.jpg', 'size': 887, 'title': 'Doctor Who'}
+#]
 
 @app.route('/')
 def index():
@@ -56,7 +56,8 @@ def index():
 
 @app.route('/photos/list.json')
 def get_photos():
-    resp = make_response(jsonify(photos), 200)
+    dirtable.read_entries()
+    resp = make_response(jsonify(dirtable.get_array_list()), 200)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
 
