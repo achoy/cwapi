@@ -36,7 +36,7 @@ class DirTable(dict):
 
     def init_db(self):
         db = self.get_db()
-        with app.open_resource('schema.sql', mode='r') as f:
+        with self.app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
 
