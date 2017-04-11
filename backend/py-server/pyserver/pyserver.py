@@ -72,4 +72,4 @@ def download2(filename):
     return send_from_directory(directory=dirpath, filename=filename)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug=True)
+    app.run(host='0.0.0.0:5000',debug=True)
