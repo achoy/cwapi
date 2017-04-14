@@ -42,7 +42,7 @@ photoArray =
 
 urlPrefix : String
 urlPrefix =
-    "http://tardis.choycreative.com:5000/"
+    "http://tardis.choycreative.com/photos"
 
 getPhotoUrl : Int -> Maybe String
 getPhotoUrl index =
@@ -66,7 +66,7 @@ viewLarge maybeUrl =
         Nothing -> text ""
         Just url ->
             img [ class "large"
-            , src (urlPrefix ++ "photo/" ++ url)] []
+            , src (urlPrefix ++ "full/" ++ url)] []
 
 viewThumbnail : Maybe String -> Photo -> Html Msg
 viewThumbnail selectedUrl thumbnail =
@@ -94,7 +94,7 @@ photoDecoder =
 initialCmd : Cmd Msg
 initialCmd  =
     list photoDecoder
-        |> Http.get "http://tardis.choycreative.com:5000/photos/list.json"
+        |> Http.get (urlPrefix ++ "/list.json")
         |> Http.send LoadPhotos
 
 
