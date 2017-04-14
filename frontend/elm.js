@@ -9503,7 +9503,7 @@ var _user$project$PhotoGroove$sizeToString = function (size) {
 			return 'large';
 	}
 };
-var _user$project$PhotoGroove$urlPrefix = 'http://tardis.choycreative.com:5000/';
+var _user$project$PhotoGroove$urlPrefix = 'http://tardis.choycreative.com/photos';
 var _user$project$PhotoGroove$viewLarge = function (maybeUrl) {
 	var _p1 = maybeUrl;
 	if (_p1.ctor === 'Nothing') {
@@ -9520,7 +9520,7 @@ var _user$project$PhotoGroove$viewLarge = function (maybeUrl) {
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							_user$project$PhotoGroove$urlPrefix,
-							A2(_elm_lang$core$Basics_ops['++'], 'photo/', _p1._0))),
+							A2(_elm_lang$core$Basics_ops['++'], 'full/', _p1._0))),
 					_1: {ctor: '[]'}
 				}
 			},
@@ -9579,7 +9579,7 @@ var _user$project$PhotoGroove$initialCmd = A2(
 	_user$project$PhotoGroove$LoadPhotos,
 	A2(
 		_elm_lang$http$Http$get,
-		'http://tardis.choycreative.com:5000/photos/list.json',
+		A2(_elm_lang$core$Basics_ops['++'], _user$project$PhotoGroove$urlPrefix, '/list.json'),
 		_elm_lang$core$Json_Decode$list(_user$project$PhotoGroove$photoDecoder)));
 var _user$project$PhotoGroove$SetSize = function (a) {
 	return {ctor: 'SetSize', _0: a};
