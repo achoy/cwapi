@@ -8,13 +8,17 @@ cwapi is an infrastructure that provides some simple tools to build a web api an
 ## Plan
 
 Backend development:
-- Java: use simple and restlet framework. Use ant to build.
-- Kotlin: rewrite Java framework in Kotlin (learning tool)
+- Python Flask (CURRENT)
+- Java: use simple and restlet framework. Use ant to build. (FUTURE)
+- Kotlin: rewrite Java framework in Kotlin (learning tool) (FUTURE)
 
 Frontend development:
-- Elm: simple frontend without using Javascript
+- Elm: simple frontend without using Javascript (CURRENT)
 
 Components:
+- Store metadata in SQLite
+
+Future Components:
 - Routing engine
 - Common DB access with two planned 'adaptors': Mongo and Postgres (via jdbc)
 - Common Data/Image access with two planned data stores: Google Drive and S3
@@ -27,6 +31,28 @@ Pictures API will provide a CRUD and query interface to manage images (jpg, png,
 and external metadata with it.  Two planned storage engines for metadata will be supported
 (Mongo and PostgreSQL). Images themselves will be either stored in S3 or via Google Drive
 so some access will be needed to manage S3 or Google Drive credentials.
+
+### CURRENT IMPLEMENTATION
+
+ENDPOINT: http://tardis.choycreative/photos
+
+### `/list.json`
+
+Return list of photos (metadata)
+
+### `/thumb/<filename>`
+
+Return thumbnail for filename
+
+### `/full/<filename>`
+
+Return full image for filename
+
+### `/meta/<filename>`
+
+Return metadata for one filename
+
+### FUTURE PLAN
 
 ENDPOINT: http://site:8888/v1/api/
 
