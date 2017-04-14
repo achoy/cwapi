@@ -61,12 +61,12 @@ def get_photos():
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
 
-@app.route('/thumb/<path:filename>', methods=['GET'])
+@app.route('/photos/thumb/<path:filename>', methods=['GET'])
 def download1(filename):
     dirpath = thumb_files_path()
     return send_from_directory(directory=dirpath, filename=filename)
 
-@app.route('/photo/<path:filename>', methods=['GET'])
+@app.route('/photo/full/<path:filename>', methods=['GET'])
 def download2(filename):
     dirpath = large_files_path()
     return send_from_directory(directory=dirpath, filename=filename)
