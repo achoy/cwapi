@@ -9520,7 +9520,7 @@ var _user$project$PhotoGroove$viewLarge = function (maybeUrl) {
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							_user$project$PhotoGroove$urlPrefix,
-							A2(_elm_lang$core$Basics_ops['++'], 'full/', _p1._0))),
+							A2(_elm_lang$core$Basics_ops['++'], '/full/', _p1._0))),
 					_1: {ctor: '[]'}
 				}
 			},
@@ -9712,7 +9712,7 @@ var _user$project$PhotoGroove$viewThumbnail = F2(
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						_user$project$PhotoGroove$urlPrefix,
-						A2(_elm_lang$core$Basics_ops['++'], 'thumb/', thumbnail.url))),
+						A2(_elm_lang$core$Basics_ops['++'], '/thumb/', thumbnail.url))),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Attributes$title(

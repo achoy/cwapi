@@ -66,12 +66,12 @@ viewLarge maybeUrl =
         Nothing -> text ""
         Just url ->
             img [ class "large"
-            , src (urlPrefix ++ "full/" ++ url)] []
+            , src (urlPrefix ++ "/full/" ++ url)] []
 
 viewThumbnail : Maybe String -> Photo -> Html Msg
 viewThumbnail selectedUrl thumbnail =
     img
-        [ src (urlPrefix ++ "thumb/" ++ thumbnail.url)
+        [ src (urlPrefix ++ "/thumb/" ++ thumbnail.url)
         , title (thumbnail.title ++ " [" ++ toString thumbnail.size ++ " KB]")
         , classList [ ( "selected", selectedUrl == Just thumbnail.url )]
         , onClick (SelectByUrl thumbnail.url)] []
