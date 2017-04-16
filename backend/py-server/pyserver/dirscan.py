@@ -12,17 +12,19 @@ import subprocess
 import math
 from flask import g
 from collections import namedtuple
+from pyserver.imageapi import *
 
-DirEntry = namedtuple('DirEntry', 'src msrc size w h title')
+# DirEntry = namedtuple('DirEntry', 'src msrc size w h title')
 
 class DirTable(dict):
 
     def __init__(self, app):
         self.app = app
+        self.loaded = False
 
     # if not found, return this missing function
     def __missing__(self, key):
-        return DirEntry('', 0, '')
+        return Image()
 
     def connect_db(self):
         """Connect to specific database"""
@@ -47,76 +49,81 @@ class DirTable(dict):
             g.sqlite_db.close()
 
     def read_entries(self):
+        if self.Loaded:
+            return
         db = self.get_db()
         cur = db.execute('select * from metaphotos')
         entries = cur.fetchall()
         for e in entries:
             key = e['src']
-            self[key] = DirEntry(key, e['msrc'], e['size'], e['w'], e['h'], e['title'])
+            image = Image()
+            image.set_data(e)
+            self[key] = image
 
     def store_entries(self):
         db = self.get_db()
         db.execute('delete from metaphotos')
         rows = []
         for key, value in self.items():
-            rows.append((value.src, value.msrc, value.size, value.w, value.h, value.title))
-        db.executemany('insert into metaphotos (src, msrc, size, w, h, title) values(?,?,?,?,?,?)'
+            rows.append(value.get_data())
+        db.executemany('insert into metaphotos (src, msrc, size, w, h, title, datetime) values(?,?,?,?,?,?,?)'
             , rows)
+        db.commit()
+
+    def updatefield(self, field, value, key):
+        image = self[key]
+        image.set_field(field, value)
+        self[key] = image
+        db = self.get_db()
+        updatesql = 'update metaphotos set ' + field + ' = ? where key = ?'
+        db.execute(updatesql, (value, key))
         db.commit()
 
     def show_entries(self):
         for key, value in self.items():
-            print(value)
+            print(value.get_data())
 
     def get_array_list(self):
         llist = []
         for key, value in self.items():
-            llist.append( { 'src' : value.src
-            , 'msrc' : value.msrc
-            , 'size' : value.size
-            , 'w' : value.w
-            , 'h' : value.h
-            , 'title' : value.title } )
+            llist.append( value.get_dict() )
         return llist
 
     def match_entries(self, dirscan):
-        filelist = dirscan.scan()
-        for (name, width, height, size) in filelist:
-            if name in self:
-                found = self[name]
-                found.src   = name
-                found.msrc  = name
-                found.w     = width
-                found.h     = height
-                found.size  = size
-                found.title = name
-                self[name] = found
-            else:
-                self[name] = DirEntry(name, name, size, width, height, name)
+        filelist = dirscan.scanwalk()
+        for image in filelist:
+            self[image.name()] = image
 
-def fixnumber(numstr, trail, mult=1):
-    numstr = numstr.replace(trail, '')
-    fnum = float(numstr) * mult
-    return math.floor(fnum)
 
 class DirScan(object):
 
-    def __init__(self, scanFolder1):
-        self.scanFolder1 = scanFolder1
+    def __init__(self, rootPath, imagePath, thumbPath):
+        self.imageAPI = ImageAPI(rootPath, imagePath, thumbPath)
 
     def isfilter(self, name):
         return name.lower().endswith(('.png', '.jpeg', '.jpg'))
 
     def scan(self):
-        dirname = self.scanFolder1
+        dirname = self.imageAPI.getscandir()
         filelist = os.listdir(dirname)
         if len(filelist) > 0:
             print("Scanning dir " + dirname + " count: " + str(len(filelist)))
-        self.curFiles = [ self.getprops2(name) for name in filelist if self.isfilter(name) ]
+        self.curFiles = [ self.imageAPI.identify(name) for name in filelist
+            if self.isfilter(name) ]
+        return self.curFiles
+
+    def scanwalk(self):
+        startpath = self.imageAPI.getscandir()
+        self.curFiles = [self.imageAPI.identify(os.path.join(root, name))
+                        for root, dirs, files in os.walk(startpath)
+                        for name in files
+                        if self.isfilter(name)]
+        if len(self.curFiles) > 0:
+            print("Walking ", startpath, " count: ", len(self.curFiles))
         return self.curFiles
 
     def getpath(self, name):
-        return os.path.join(self.scanFolder1, name)
+        return self.imageAPI.getpath(name)
 
     def getprops(self, name):
         filepath = self.getpath(name)

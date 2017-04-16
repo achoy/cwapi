@@ -32,17 +32,20 @@ def close_db(error):
 
 @app.cli.command('update')
 def update_command():
-    dirscan = DirScan(large_files_path())
+    dirscan = DirScan(root_path(), 'photos/large', 'photos/thumb')
     dirtable.read_entries()
     dirtable.match_entries(dirscan)
-    dirtable.show_entries()
+    #dirtable.show_entries()
     dirtable.store_entries()
 
+def root_path():
+    return current_app.root_path
+
 def large_files_path():
-    return os.path.join(current_app.root_path, 'photos/large')
+    return os.path.join(root_path(), 'photos/large')
 
 def thumb_files_path():
-    return os.path.join(current_app.root_path, 'photos/small')
+    return os.path.join(root_path(), 'photos/thumb')
 
 #photos = [
 #    { 'url': 'Norwegian1.jpeg', 'size': 790, 'title': 'Norwegian 1' },
