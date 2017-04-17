@@ -49,16 +49,26 @@ class DirTable(dict):
             g.sqlite_db.close()
 
     def read_entries(self):
-        if self.Loaded:
+        if self.loaded:
             return
         db = self.get_db()
         cur = db.execute('select * from metaphotos')
         entries = cur.fetchall()
         for e in entries:
-            key = e['src']
-            image = Image()
-            image.set_data(e)
+            key = e['pkey']
+            image = Image(e)
+#            image.printme()
+#            image.set_data(e)
             self[key] = image
+        self.loaded = True
+
+    def read_one(self, pkey):
+        db = self.get_db()
+        cur = db.execute('select * from metaphotos where pkey = ?', (pkey))
+        entries = cur.fetchall()
+        for e in entries:
+            self[pkey] = Image(e)
+        return self[pkey]
 
     def store_entries(self):
         db = self.get_db()
@@ -66,8 +76,7 @@ class DirTable(dict):
         rows = []
         for key, value in self.items():
             rows.append(value.get_data())
-        db.executemany('insert into metaphotos (src, msrc, size, w, h, title, datetime) values(?,?,?,?,?,?,?)'
-            , rows)
+        db.executemany('insert into metaphotos (' + getAllFields() + ') values(?,?,?,?,?,?,?,?)' , rows)
         db.commit()
 
     def updatefield(self, field, value, key):
@@ -79,6 +88,29 @@ class DirTable(dict):
         db.execute(updatesql, (value, key))
         db.commit()
 
+    def make_thumb_if_not_exist(self, image, imageAPI):
+        thumb = imageAPI.getthumb(image.name())
+        if not os.path.isfile(thumb):
+            print('Creating thumb', thumb, 'from image', image.name())
+            imageAPI.make_thumbnail(image)
+
+    def get_photo(self, key, imageAPI):
+        if key not in self and not self.loaded:
+            self.read_entries()
+        image = self[key]
+        if image == None:
+            return ('','')
+        return (imageAPI.getscandir(image.loc()), image.name())
+
+    def get_thumb(self, key, imageAPI):
+        if key not in self and not self.loaded:
+            self.read_entries()
+        image = self[key]
+        if image == None:
+            return ('','')
+        self.make_thumb_if_not_exist(image, imageAPI)
+        return (imageAPI.getthumbdir(image.loc()), image.thumb())
+
     def show_entries(self):
         for key, value in self.items():
             print(value.get_data())
@@ -86,19 +118,23 @@ class DirTable(dict):
     def get_array_list(self):
         llist = []
         for key, value in self.items():
-            llist.append( value.get_dict() )
+            d = value.get_dict()
+            print(d)
+            llist.append( d )
         return llist
 
     def match_entries(self, dirscan):
         filelist = dirscan.scanwalk()
+        if len(filelist) > 0:
+            print("Walking count: ", len(filelist))
         for image in filelist:
-            self[image.name()] = image
-
+            key = image.get_key()
+            self[key] = image
 
 class DirScan(object):
 
-    def __init__(self, rootPath, imagePath, thumbPath):
-        self.imageAPI = ImageAPI(rootPath, imagePath, thumbPath)
+    def __init__(self, imageAPI):
+        self.imageAPI = imageAPI
 
     def isfilter(self, name):
         return name.lower().endswith(('.png', '.jpeg', '.jpg'))
@@ -118,8 +154,6 @@ class DirScan(object):
                         for root, dirs, files in os.walk(startpath)
                         for name in files
                         if self.isfilter(name)]
-        if len(self.curFiles) > 0:
-            print("Walking ", startpath, " count: ", len(self.curFiles))
         return self.curFiles
 
     def getpath(self, name):
@@ -129,16 +163,3 @@ class DirScan(object):
         filepath = self.getpath(name)
         statinfo = os.stat(filepath)
         return (name, statinfo.st_size // 1024)
-
-    def getprops2(self, name):
-        filepath = self.getpath(name)
-        identifyout = subprocess.check_output(['identify', '-format', '"%w %h %b"', filepath])
-        iout = identifyout.decode("utf-8").split(' ')
-        width = int(iout[0][1:])
-        height = int(iout[1])
-        if "MB" in iout[2]:
-            size = fixnumber(iout[2], 'MB"', 1024.0)
-        else:
-            size = fixnumber(iout[2], 'KB"')
-        print('stat: ', filepath, width, height, size)
-        return (name, width, height, size)

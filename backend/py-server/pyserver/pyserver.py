@@ -1,13 +1,16 @@
 #!flask/bin/python
 import os
 import sqlite3
+from flask_cache import Cache
 from flask import Flask, jsonify, make_response, current_app, \
     request, session, g, redirect, url_for, abort, \
     render_template, flash, send_from_directory
 
 from pyserver.dirscan import *
+from pyserver.imageapi import ImageAPI
 
 app = Flask(__name__)
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 app.config.from_object(__name__)  # load config from this filename
 
 # Load default config and override config
@@ -32,7 +35,7 @@ def close_db(error):
 
 @app.cli.command('update')
 def update_command():
-    dirscan = DirScan(root_path(), 'photos/large', 'photos/thumb')
+    dirscan = DirScan(get_api())
     dirtable.read_entries()
     dirtable.match_entries(dirscan)
     #dirtable.show_entries()
@@ -47,6 +50,9 @@ def large_files_path():
 def thumb_files_path():
     return os.path.join(root_path(), 'photos/thumb')
 
+def get_api():
+    return ImageAPI(root_path(), 'photos/large', 'photos/thumb')
+
 #photos = [
 #    { 'url': 'Norwegian1.jpeg', 'size': 790, 'title': 'Norwegian 1' },
 #    { 'url': 'cool_balcony.jpg', 'size': 93, 'title': 'cool balcony' },
@@ -58,20 +64,27 @@ def index():
         return "CWAPI API Server"
 
 @app.route('/photos/list.json')
+@cache.cached(timeout=60)
 def get_photos():
     dirtable.read_entries()
     resp = make_response(jsonify(dirtable.get_array_list()), 200)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
 
-@app.route('/photos/thumb/<path:filename>', methods=['GET'])
-def download1(filename):
-    dirpath = thumb_files_path()
+@app.route('/photos/thumb/<string:pkey>', methods=['GET'])
+def downloadT1(pkey):
+    (dirpath, filename) = dirtable.get_thumb(pkey, get_api())
+    if len(dirpath) == 0:
+        return 'Cannot load thumbnail file from %s' % pkey
+    print('loading from', dirpath, ':', filename)
     return send_from_directory(directory=dirpath, filename=filename)
 
-@app.route('/photos/full/<path:filename>', methods=['GET'])
-def download2(filename):
-    dirpath = large_files_path()
+@app.route('/photos/full/<string:pkey>', methods=['GET'])
+def download2(pkey):
+    (dirpath, filename) = dirtable.get_photo(pkey, get_api())
+    if len(dirpath) == 0:
+        return 'Cannot load file from %s' % pkey
+    print('loading from', dirpath, ':', filename)
     return send_from_directory(directory=dirpath, filename=filename)
 
 if __name__ == '__main__':
