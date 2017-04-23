@@ -71,7 +71,8 @@ class ImageAPI(object):
             datetime = '2017:01:01 02:00:00'
             pass
         # truncate rootPath when passing in to Image()
-        image = Image(filepath=ipath[self.rplen:], width=width, height=height, size=size, datetime=datetime)
+        image = Image()
+        image.set_params(ipath[self.rplen:], width, height, size, datetime)
         print(image.get_key())
         return image
 

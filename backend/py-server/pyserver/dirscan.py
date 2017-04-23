@@ -56,9 +56,8 @@ class DirTable(dict):
         entries = cur.fetchall()
         for e in entries:
             key = e['pkey']
-            image = Image(e)
-#            image.printme()
-#            image.set_data(e)
+            image = Image()
+            image.set_dict(e)
             self[key] = image
         self.loaded = True
 
@@ -95,17 +94,18 @@ class DirTable(dict):
             imageAPI.make_thumbnail(image)
 
     def get_photo(self, key, imageAPI):
-        if key not in self and not self.loaded:
-            self.read_entries()
-        image = self[key]
+        image = self.get_photo_data(key)
         if image == None:
             return ('','')
         return (imageAPI.getscandir(image.loc()), image.name())
 
-    def get_thumb(self, key, imageAPI):
+    def get_photo_data(self, key):
         if key not in self and not self.loaded:
             self.read_entries()
-        image = self[key]
+        return self[key]
+
+    def get_thumb(self, key, imageAPI):
+        image = self.get_photo_data(key)
         if image == None:
             return ('','')
         self.make_thumb_if_not_exist(image, imageAPI)

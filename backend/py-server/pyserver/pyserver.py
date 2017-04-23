@@ -8,6 +8,7 @@ from flask import Flask, jsonify, make_response, current_app, \
 
 from pyserver.dirscan import *
 from pyserver.imageapi import ImageAPI
+from pyserver.analyze import *
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
@@ -24,6 +25,7 @@ app.config.update(dict(
 #app.config.from_envvar('PHOTO_SETTINGS', silent=True)
 
 dirtable = DirTable(app)
+analyzeAPI = ImageAnalysis(app)
 
 @app.cli.command('initdb')
 def initdb_command():
@@ -62,7 +64,7 @@ def get_api():
 
 @app.route('/')
 def index():
-        return "CWAPI API Server"
+        return "CWAPI API Server from {0}".format(request)
 
 @app.route('/photos/list.json')
 @cache.cached(timeout=60)
@@ -71,6 +73,15 @@ def get_photos():
     resp = make_response(jsonify(dirtable.get_array_list()), 200)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
+
+@app.route('/photos/analyze/<string:pkey>', methods=['GET'])
+def analyze_image(pkey):
+    image = dirtable.get_photo_data(pkey)
+    if image:
+        data = analyzeAPI.analyzeImage(self.app.config['MYSERVER'], image, 'Categories,Tags,Faces')
+        return data
+    else:
+        return "API Error"
 
 @app.route('/photos/thumb/<string:pkey>', methods=['GET'])
 def downloadT1(pkey):

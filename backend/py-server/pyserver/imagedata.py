@@ -32,21 +32,23 @@ def decode_params(subprocess_in, seps = ' '):
 
 class Image(object):
 
-    def __init__(self, filepath, width, height, size, datetime):
-        (floc, fname) = os.path.split(filepath)
-        self.key1 = genkey(fname, floc)
-        self.title = floc + ' ' + fname + ' ' + datetime
-        self.data = ImageEntry(self.key1, fname, floc, size, width, height, self.title, datetime)
+    def __init__(self):
+        self.inited = False
 
-    def __init__(self, idt):
+    def set_params(self, filepath='', width=0, height=0, size=0, datetime=''):
+        if len(filepath) > 0:
+            (floc, fname) = os.path.split(filepath)
+            self.key1 = genkey(fname, floc)
+            self.title = floc + ' ' + fname + ' ' + datetime
+            self.data = ImageEntry(self.key1, fname, floc, size, width, height, self.title, datetime)
+            self.inited = True
+
+    def set_dict(self, idt):
         self.key1 = genkey(idt['fname'], idt['floc'])
         self.title = idt['floc'] + ' ' + idt['fname'] + ' ' + idt['datetime']
         self.data = ImageEntry(self.key1, idt['fname'], idt['floc'],
-            idt['size'], idt['w'], idt['h'], self.title, idt['datetime'])
-
-    def set_data(self, idt):
-        self.data = ImageEntry(idt['pkey'], idt['fname'], idt['floc'],
-        idt['size'], idt['w'], idt['h'], idt['title'], idt['datetime'])
+        idt['size'], idt['w'], idt['h'], self.title, idt['datetime'])
+        self.inited = True
 
     def get_data(self):
         value = self.data
@@ -71,6 +73,9 @@ class Image(object):
         , 'h' : value.h
         , 'title' : value.title
         , 'datetime' : value.datetime }
+
+    def get_url(self, urlRoot, fileType):
+        return "{0}/{1}/{2}".format(urlRoot, fileType, self.get_key())
 
     def get_key(self):
         return self.data.pkey
