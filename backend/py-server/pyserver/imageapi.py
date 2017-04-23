@@ -54,7 +54,7 @@ class ImageAPI(object):
         #    size = fixnumber(iout[2], 'MB"', 1024.0)
         #else:
         #    size = fixnumber(iout[2], 'KB"')
-        size = get_size(iout[2])
+        size = self.get_size(iout[2])
         result = subprocess.check_output(['identify', '-format', '"%[exif:*]"', ipath])
         try:
             ilines = decode_params(result, os.linesep)
