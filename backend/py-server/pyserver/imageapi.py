@@ -35,16 +35,26 @@ class ImageAPI(object):
         thumbname = thumbfile(filename)
         return os.path.join(self.getthumbdir(), thumbname)
 
+    def get_size(self, istr):
+        if "MB" in istr:
+            return fixnumber(istr, 'MB"', 1024.0)
+        elif "KB" in istr:
+            return fixnumber(istr, 'KB"')
+        elif "B" in istr:
+            return fixnumber(istr, 'B"') // 1024
+        return 0
+
     def identify(self, ipath):
         # ipath = self.getpath(filename)
         result = subprocess.check_output(['identify', '-format', '"%w %h %b"', ipath])
         iout   = decode_params(result)
         width  = int(iout[0][1:])
         height = int(iout[1])
-        if "MB" in iout[2]:
-            size = fixnumber(iout[2], 'MB"', 1024.0)
-        else:
-            size = fixnumber(iout[2], 'KB"')
+        #if "MB" in iout[2]:
+        #    size = fixnumber(iout[2], 'MB"', 1024.0)
+        #else:
+        #    size = fixnumber(iout[2], 'KB"')
+        size = get_size(iout[2])
         result = subprocess.check_output(['identify', '-format', '"%[exif:*]"', ipath])
         try:
             ilines = decode_params(result, os.linesep)
@@ -61,7 +71,7 @@ class ImageAPI(object):
             datetime = '2017:01:01 02:00:00'
             pass
         # truncate rootPath when passing in to Image()
-        image = Image(ipath[self.rplen:], width, height, size, datetime)
+        image = Image(filepath=ipath[self.rplen:], width=width, height=height, size=size, datetime=datetime)
         print(image.get_key())
         return image
 
