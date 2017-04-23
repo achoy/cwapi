@@ -12,15 +12,16 @@ from pyserver.imageapi import ImageAPI
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 app.config.from_object(__name__)  # load config from this filename
+app.config.from_envvar('FLASK_INFO')
 
 # Load default config and override config
 app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'photos.db'),
-    SECRET_KEY='supasecret',
-    USERNAME='admin',
-    PASSWORD='default'
+    DATABASE=os.path.join(app.root_path, 'photos.db')
+#    SECRET_KEY='supasecret',
+#    USERNAME='admin',
+#    PASSWORD='default'
 ))
-app.config.from_envvar('PHOTO_SETTINGS', silent=True)
+#app.config.from_envvar('PHOTO_SETTINGS', silent=True)
 
 dirtable = DirTable(app)
 

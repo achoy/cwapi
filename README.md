@@ -9,6 +9,7 @@ cwapi is an infrastructure that provides some simple tools to build a web api an
 
 Backend development:
 - Python Flask (CURRENT)
+  Using Flask 0.12 (flask.pocoo.org/docs/0.12)
 - Java: use simple and restlet framework. Use ant to build. (FUTURE)
 - Kotlin: rewrite Java framework in Kotlin (learning tool) (FUTURE)
 
