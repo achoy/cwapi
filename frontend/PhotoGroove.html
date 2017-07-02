@@ -1,14 +1,20 @@
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" href="static/styles.css">
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/photoswipe.css">
+        <link rel="stylesheet" href="css/default-skin/default-skin.css">
     </head>
 
     <body>
         <div id="elm-area"></div>
-        <script src="elm.js"></script>
+        <script src="js/photoswipe.min.js"></script>
+        <script src="js/photoswipe-ui-default.min.js"></script>
+        <script src="js/elm.js"></script>
         <script>
-            Elm.PhotoGroove.embed(document.getElementById("elm-area"))
+            var app = Elm.PhotoGroove.embed(document.getElementById("elm-area"));
+
+            
         </script>
     </body>
 </html>

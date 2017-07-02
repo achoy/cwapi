@@ -1,0 +1,320 @@
+var _user$project$PhotoSwipe$psview = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('pswp'),
+			_1: {
+				ctor: '::',
+				_0: A2(_elm_lang$html$Html_Attributes$attribute, 'aria-hidden', 'true'),
+				_1: {
+					ctor: '::',
+					_0: A2(_elm_lang$html$Html_Attributes$attribute, 'role', 'dialog'),
+					_1: {
+						ctor: '::',
+						_0: A2(_elm_lang$html$Html_Attributes$attribute, 'tabindex', '-1'),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('pswp__bg'),
+					_1: {ctor: '[]'}
+				},
+				{ctor: '[]'}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('pswp__scroll-wrap'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('pswp__container'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('pswp__item'),
+										_1: {ctor: '[]'}
+									},
+									{ctor: '[]'}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('pswp__item'),
+											_1: {ctor: '[]'}
+										},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('pswp__item'),
+												_1: {ctor: '[]'}
+											},
+											{ctor: '[]'}),
+										_1: {ctor: '[]'}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('pswp__ui pswp__ui--hidden'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('pswp__top-bar'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('pswp__counter'),
+													_1: {ctor: '[]'}
+												},
+												{ctor: '[]'}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$button,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('pswp__button pswp__button--close'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$title('Close (Esc)'),
+															_1: {ctor: '[]'}
+														}
+													},
+													{ctor: '[]'}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$button,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('pswp__button pswp__button--share'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$title('Share'),
+																_1: {ctor: '[]'}
+															}
+														},
+														{ctor: '[]'}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$button,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('pswp__button pswp__button--fs'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$title('Toggle fullscreen'),
+																	_1: {ctor: '[]'}
+																}
+															},
+															{ctor: '[]'}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$button,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('pswp__button pswp__button--zoom'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$title('Zoom in/out'),
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{ctor: '[]'}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$div,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$class('pswp__preloader'),
+																		_1: {ctor: '[]'}
+																	},
+																	{
+																		ctor: '::',
+																		_0: A2(
+																			_elm_lang$html$Html$div,
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$class('pswp__preloader__icn'),
+																				_1: {ctor: '[]'}
+																			},
+																			{
+																				ctor: '::',
+																				_0: A2(
+																					_elm_lang$html$Html$div,
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$html$Html_Attributes$class('pswp__preloader__cut'),
+																						_1: {ctor: '[]'}
+																					},
+																					{
+																						ctor: '::',
+																						_0: A2(
+																							_elm_lang$html$Html$div,
+																							{
+																								ctor: '::',
+																								_0: _elm_lang$html$Html_Attributes$class('pswp__preloader__donut'),
+																								_1: {ctor: '[]'}
+																							},
+																							{ctor: '[]'}),
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('pswp__share-modal pswp__share-modal--hidden pswp__single-tap'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('pswp__share-tooltip'),
+														_1: {ctor: '[]'}
+													},
+													{ctor: '[]'}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$button,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('pswp__button pswp__button--arrow--left'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$title('Previous (arrow left)'),
+														_1: {ctor: '[]'}
+													}
+												},
+												{ctor: '[]'}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$button,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('pswp__button pswp__button--arrow--right'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$title('Next (arrow right)'),
+															_1: {ctor: '[]'}
+														}
+													},
+													{ctor: '[]'}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$div,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('pswp__caption'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$div,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('pswp__caption__center'),
+																	_1: {ctor: '[]'}
+																},
+																{ctor: '[]'}),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _user$project$PhotoSwipe$psOptions = {history: false, focus: false, showAnimationDuration: 0, hideAnimationDuration: 0};
+var _user$project$PhotoSwipe$initialModel = {
+	photos: {ctor: '[]'},
+	options: _user$project$PhotoSwipe$psOptions,
+	loadingError: _elm_lang$core$Maybe$Nothing
+};
+var _user$project$PhotoSwipe$PsPhoto = F5(
+	function (a, b, c, d, e) {
+		return {src: a, w: b, h: c, msrc: d, title: e};
+	});
+var _user$project$PhotoSwipe$PsOptions = F4(
+	function (a, b, c, d) {
+		return {history: a, focus: b, showAnimationDuration: c, hideAnimationDuration: d};
+	});
+var _user$project$PhotoSwipe$Model = F3(
+	function (a, b, c) {
+		return {photos: a, options: b, loadingError: c};
+	});
+var _user$project$PhotoSwipe$LoadPhotos = function (a) {
+	return {ctor: 'LoadPhotos', _0: a};
+};

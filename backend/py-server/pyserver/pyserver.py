@@ -78,7 +78,7 @@ def get_photos():
 def analyze_image(pkey):
     image = dirtable.get_photo_data(pkey)
     if image:
-        data = analyzeAPI.analyzeImage(self.app.config['MYSERVER'], image, 'Categories,Tags,Faces')
+        data = analyzeAPI.analyzeImage(app.config['MYSERVER'], image, 'Categories,Tags,Faces')
         return data
     else:
         return "API Error"
