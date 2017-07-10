@@ -35,7 +35,9 @@ so some access will be needed to manage S3 or Google Drive credentials.
 
 ### CURRENT IMPLEMENTATION
 
-ENDPOINT: http://tardis.choycreative/photos
+Using python flask for a server backend.
+
+ENDPOINT: http://tardis.choycreative.com/photos
 
 ### `/list.json`
 
